@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tải Lên Tài Liệu | StudyHub Pro</title>
+    
+    <meta name="theme-color" content="#050816">
+    <link rel="icon" type="image/png" href="assets/icons/icon-192x192.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="assets/css/theme.css">
+    <link rel="stylesheet" href="assets/css/animation.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    
+    <style>
+        .upload-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .dropzone-area {
+            border: 2px dashed var(--glass-border);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: var(--border-radius-md);
+            background: rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .dropzone-area:hover, .dropzone-area.dragover {
+            border-color: var(--color-primary);
+            background: rgba(0, 229, 255, 0.05);
+            box-shadow: 0 0 20px var(--color-primary-glow);
+        }
+
+        .dropzone-icon {
+            font-size: 3.5rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            transition: var(--transition-normal);
+        }
+
+        .dropzone-area:hover .dropzone-icon {
+            color: var(--color-primary);
+            transform: translateY(-5px);
+        }
+
+        .file-preview-box {
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--color-success);
+            border-radius: var(--border-radius-sm);
+            margin-top: 1rem;
+            text-align: left;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            margin-top: 1rem;
+            display: none;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+            box-shadow: 0 0 10px var(--color-primary-glow);
+            transition: width 0.1s linear;
+        }
+    </style>
+</head>
+<body class="dashboard-body">
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="dashboard.html" class="sidebar-logo">
+                <i class="fa-solid fa-layer-group"></i> StudyHub
+            </a>
+        </div>
+        <nav class="sidebar-menu">
+            <div class="menu-label">Menu Chính</div>
+            <a href="dashboard.html" class="menu-item">
+                <i class="fa-solid fa-house"></i> <span>Tổng quan</span>
+            </a>
+            <a href="files.html" class="menu-item">
+                <i class="fa-solid fa-folder-open"></i> <span>Tài liệu</span>
+            </a>
+            <a href="subjects.html" class="menu-item">
+                <i class="fa-solid fa-book"></i> <span>Môn học</span>
+            </a>
+            <div id="roleMenuContainer"></div>
+            <div class="menu-label">Cá nhân</div>
+            <a href="profile.html" class="menu-item">
+                <i class="fa-solid fa-user"></i> <span>Hồ sơ</span>
+            </a>
+            <a href="settings.html" class="menu-item">
+                <i class="fa-solid fa-gear"></i> <span>Cài đặt</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-mini">
+                <img src="https://ui-avatars.com/api/?name=User" alt="Avatar" class="user-avatar" id="sidebarAvatar">
+                <div class="user-info">
+                    <div class="user-name" id="sidebarName">Đang tải...</div>
+                    <div class="user-role" id="sidebarRole">role</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-layout">
+        <header class="topbar">
+            <div class="topbar-left">
+                <h3 class="text-gradient-primary" style="font-weight: 700;">Tải Lên Kho Học Liệu</h3>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="upload-container">
+                
+                <div class="glass-panel p-4 animate-fade-in-up mouse-light-wrapper">
+                    <div class="mouse-light"></div>
+                    
+                    <form id="uploadForm">
+                        <div class="dropzone-area" id="dropzone">
+                            <input type="file" id="fileInput" required style="display: none;">
+                            <i class="fa-solid fa-cloud-arrow-up dropzone-icon"></i>
+                            <h4>Kéo và thả tệp tài liệu vào đây</h4>
+                            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">Hỗ trợ định dạng: PDF, DOCX, XLSX, PPTX, ZIP (Tối đa 20MB)</p>
+                            
+                            <div class="file-preview-box" id="filePreview">
+                                <i class="fa-solid fa-file-shield text-gradient-primary" style="font-size: 1.5rem;"></i>
+                                <div style="flex: 1;">
+                                    <div id="previewName" style="font-weight: 600; font-size: 0.9rem;">filename.pdf</div>
+                                    <div id="previewSize" style="font-size: 0.8rem; color: var(--text-muted);">0 Bytes</div>
+                                </div>
+                                <button type="button" class="icon-btn" id="removeFileBtn" style="color: var(--color-danger); background: rgba(239,68,68,0.1);"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+
+                            <div class="progress-bar-container" id="progressContainer">
+                                <div class="progress-bar-fill" id="progressBar"></div>
+                            </div>
+                            <div id="progressText" style="font-size: 0.85rem; margin-top: 0.5rem; display: none; font-weight: 600;">0%</div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="documentName">Tên hiển thị tài liệu (Để trống sẽ lấy tên tệp gốc)</label>
+                            <input type="text" id="documentName" class="input-control" placeholder="Ví dụ: Đề cương ôn tập Toán giải tích kì 1">
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                            <div class="input-group">
+                                <label for="documentSubject">Môn học chủ quản</label>
+                                <select id="documentSubject" class="input-control" style="background: var(--bg-main);" required>
+                                    <option value="" disabled selected>Chọn môn học...</option>
+                                    <option value="math">Toán Học</option>
+                                    <option value="physics">Vật Lý</option>
+                                    <option value="chemistry">Hóa Học</option>
+                                    <option value="it">Công Nghệ Thông Tin</option>
+                                    <option value="english">Tiếng Anh</option>
+                                    <option value="other">Khác</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="documentGrade">Khối lớp / Cấp bậc</label>
+                                <select id="documentGrade" class="input-control" style="background: var(--bg-main);" required>
+                                    <option value="10">Khối 10</option>
+                                    <option value="11">Khối 11</option>
+                                    <option value="12">Khối 12</option>
+                                    <option value="university">Đại học / Khác</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="documentDesc">Mô tả ngắn gọn nội dung tài liệu</label>
+                            <textarea id="documentDesc" class="input-control" rows="4" placeholder="Tài liệu này bao gồm những kiến thức trọng tâm nào?..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary ripple" style="width: 100%; margin-top: 1rem;">
+                            <i class="fa-solid fa-square-plus"></i> Tiến hành tải lên hệ thống
+                        </button>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="assets/js/utils.js"></script>
+    <script type="module" src="assets/js/upload.js"></script>
+    <script>
+        // Hiệu ứng ánh sáng Mouse Light cho khung Panel
+        const wrapper = document.querySelector('.mouse-light-wrapper');
+        const light = document.querySelector('.mouse-light');
+        if (wrapper && light) {
+            wrapper.addEventListener('mousemove', (e) => {
+                const rect = wrapper.getBoundingClientRect();
+                light.style.left = `${e.clientX - rect.left}px`;
+                light.style.top = `${e.clientY - rect.top}px`;
+            });
+        }
+    </script>
+</body>
+</html>

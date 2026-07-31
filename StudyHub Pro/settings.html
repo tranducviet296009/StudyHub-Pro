@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cài Đặt Hệ Thống | StudyHub Pro</title>
+    <meta name="theme-color" content="#050816">
+    <link rel="icon" type="image/png" href="assets/icons/icon-192x192.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/theme.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    
+    <style>
+        .settings-container {
+            max-width: 600px;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .setting-info h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .setting-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Toggle Switch Custom */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 28px;
+        }
+
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(255,255,255,0.1);
+            transition: .4s;
+            border-radius: 34px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 3px;
+            background-color: var(--text-primary);
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+            box-shadow: 0 0 10px var(--color-primary-glow);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+            background-color: var(--bg-main);
+        }
+    </style>
+</head>
+<body class="dashboard-body">
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="dashboard.html" class="sidebar-logo">
+                <i class="fa-solid fa-layer-group"></i> StudyHub
+            </a>
+        </div>
+        <nav class="sidebar-menu">
+            <div class="menu-label">Menu Chính</div>
+            <a href="dashboard.html" class="menu-item"><i class="fa-solid fa-house"></i> <span>Tổng quan</span></a>
+            <a href="files.html" class="menu-item"><i class="fa-solid fa-folder-open"></i> <span>Tài liệu</span></a>
+            <a href="subjects.html" class="menu-item"><i class="fa-solid fa-book"></i> <span>Môn học</span></a>
+            <div id="roleMenuContainer"></div>
+            <div class="menu-label">Cá nhân</div>
+            <a href="profile.html" class="menu-item"><i class="fa-solid fa-user"></i> <span>Hồ sơ</span></a>
+            <a href="settings.html" class="menu-item active"><i class="fa-solid fa-gear"></i> <span>Cài đặt</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-mini">
+                <img src="assets/img/default-avatar.png" alt="Avatar" class="user-avatar" id="sidebarAvatar">
+                <div class="user-info">
+                    <div class="user-name" id="sidebarName">Đang tải...</div>
+                    <div class="user-role" id="sidebarRole">role</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-layout">
+        <header class="topbar">
+            <div class="topbar-left">
+                <h3 class="text-gradient-primary" style="font-weight: 700;">Tùy Chỉnh Hệ Thống</h3>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="glass-panel settings-container p-4">
+                <h3 style="margin-bottom: 1.5rem; color: var(--text-primary);"><i class="fa-solid fa-sliders"></i> Giao diện & Trải nghiệm</h3>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Giao diện Cyberpunk/Neon (Mặc định)</h4>
+                        <p>Kích hoạt các hiệu ứng phát sáng và ánh sáng bám theo chuột.</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked disabled>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Nhận thông báo qua Email</h4>
+                        <p>Nhận thông báo khi có tài liệu mới được tải lên môn học bạn quan tâm.</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="notifyToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-item" style="border-bottom: none;">
+                    <div class="setting-info">
+                        <h4>Chế độ tối ưu hiệu suất</h4>
+                        <p>Tắt bớt các hoạt ảnh chuyển động CSS để ứng dụng mượt mà hơn trên máy cấu hình yếu.</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="performanceToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { auth, db } from './assets/js/firebase.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    document.getElementById('sidebarName').textContent = data.fullname;
+                    document.getElementById('sidebarRole').textContent = data.role;
+                    if(data.avatar) document.getElementById('sidebarAvatar').src = data.avatar;
+                }
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+</html>
