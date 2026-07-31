@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | StudyHub Pro</title>
+    
+    <meta name="theme-color" content="#050816">
+    <link rel="icon" type="image/png" href="assets/icons/icon-192x192.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="assets/css/theme.css">
+    <link rel="stylesheet" href="assets/css/animation.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+<body class="dashboard-body">
+
+    <div style="position: fixed; top: -20%; right: -10%; width: 50vw; height: 50vw; background: var(--color-primary-glow); filter: blur(200px); opacity: 0.3; z-index: -1;"></div>
+    <div style="position: fixed; bottom: -20%; left: -10%; width: 50vw; height: 50vw; background: var(--color-secondary-glow); filter: blur(200px); opacity: 0.3; z-index: -1;"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="dashboard.html" class="sidebar-logo">
+                <i class="fa-solid fa-layer-group"></i>
+                StudyHub
+            </a>
+            <button class="icon-btn" id="closeSidebar" style="display: none;">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <nav class="sidebar-menu">
+            <div class="menu-label">Menu Chính</div>
+            <a href="dashboard.html" class="menu-item active">
+                <i class="fa-solid fa-house"></i>
+                <span>Tổng quan</span>
+            </a>
+            <a href="files.html" class="menu-item">
+                <i class="fa-solid fa-folder-open"></i>
+                <span>Tài liệu</span>
+            </a>
+            <a href="subjects.html" class="menu-item">
+                <i class="fa-solid fa-book"></i>
+                <span>Môn học</span>
+            </a>
+
+            <div id="roleMenuContainer"></div>
+
+            <div class="menu-label">Cá nhân</div>
+            <a href="profile.html" class="menu-item">
+                <i class="fa-solid fa-user"></i>
+                <span>Hồ sơ</span>
+            </a>
+            <a href="settings.html" class="menu-item">
+                <i class="fa-solid fa-gear"></i>
+                <span>Cài đặt</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-mini" onclick="window.location.href='profile.html'">
+                <img src="https://ui-avatars.com/api/?name=User" alt="Avatar" class="user-avatar" id="sidebarAvatar">
+                <div class="user-info">
+                    <div class="user-name" id="sidebarName">Đang tải...</div>
+                    <div class="user-role" id="sidebarRole">role</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-layout">
+        
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Tìm kiếm tài liệu, môn học...">
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <div class="notification-bell">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="badge">3</span>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+                </button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            
+            <div class="page-header animate-fade-in-up">
+                <div class="page-title">
+                    <h1 id="welcomeMessage">Chào buổi sáng, ...</h1>
+                    <p>Khám phá không gian học tập tuyệt vời của bạn hôm nay.</p>
+                </div>
+                <div class="page-actions">
+                    <a href="upload.html" class="btn btn-primary ripple" id="uploadBtnTop" style="display: none;">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Tải lên tài liệu
+                    </a>
+                </div>
+            </div>
+
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card glass-panel skeleton" style="height: 110px;"></div>
+                <div class="stat-card glass-panel skeleton" style="height: 110px;"></div>
+                <div class="stat-card glass-panel skeleton" style="height: 110px;"></div>
+                <div class="stat-card glass-panel skeleton" style="height: 110px;"></div>
+            </div>
+
+            <section class="files-section animate-slide-in-right">
+                <div class="section-title">
+                    <i class="fa-solid fa-clock-rotate-left" style="color: var(--color-primary);"></i> Tài liệu mới nhất
+                </div>
+                
+                <div class="files-grid" id="recentFilesGrid">
+                    <div class="file-card glass-panel skeleton" style="height: 200px;"></div>
+                    <div class="file-card glass-panel skeleton" style="height: 200px;"></div>
+                    <div class="file-card glass-panel skeleton" style="height: 200px;"></div>
+                    <div class="file-card glass-panel skeleton" style="height: 200px;"></div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script type="module" src="assets/js/utils.js"></script>
+    <script type="module" src="assets/js/dashboard.js"></script>
+    <script>
+        // Sidebar Toggle Logic for Mobile
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menuToggle');
+        const closeSidebar = document.getElementById('closeSidebar');
+
+        if(window.innerWidth <= 768) {
+            closeSidebar.style.display = 'block';
+        }
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.add('show');
+        });
+
+        closeSidebar.addEventListener('click', () => {
+            sidebar.classList.remove('show');
+        });
+
+        // Close sidebar if clicked outside on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768 && sidebar.classList.contains('show')) {
+                if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+                    sidebar.classList.remove('show');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Mục Môn Học | StudyHub Pro</title>
+    <meta name="theme-color" content="#050816">
+    <link rel="icon" type="image/png" href="assets/icons/icon-192x192.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/theme.css">
+    <link rel="stylesheet" href="assets/css/animation.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    
+    <style>
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .subject-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            border-radius: var(--border-radius-md);
+            background: rgba(10, 15, 37, 0.7);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .subject-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--color-primary);
+            box-shadow: 0 10px 30px rgba(0, 229, 255, 0.15);
+        }
+
+        .subject-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: -webkit-linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: var(--transition-normal);
+        }
+
+        .subject-card:hover .subject-icon {
+            transform: scale(1.1);
+        }
+
+        .subject-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .subject-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body class="dashboard-body">
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="dashboard.html" class="sidebar-logo">
+                <i class="fa-solid fa-layer-group"></i> StudyHub
+            </a>
+        </div>
+        <nav class="sidebar-menu">
+            <div class="menu-label">Menu Chính</div>
+            <a href="dashboard.html" class="menu-item"><i class="fa-solid fa-house"></i> <span>Tổng quan</span></a>
+            <a href="files.html" class="menu-item"><i class="fa-solid fa-folder-open"></i> <span>Tài liệu</span></a>
+            <a href="subjects.html" class="menu-item active"><i class="fa-solid fa-book"></i> <span>Môn học</span></a>
+            <div id="roleMenuContainer"></div>
+            <div class="menu-label">Cá nhân</div>
+            <a href="profile.html" class="menu-item"><i class="fa-solid fa-user"></i> <span>Hồ sơ</span></a>
+            <a href="settings.html" class="menu-item"><i class="fa-solid fa-gear"></i> <span>Cài đặt</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-mini">
+                <img src="assets/img/default-avatar.png" alt="Avatar" class="user-avatar" id="sidebarAvatar">
+                <div class="user-info">
+                    <div class="user-name" id="sidebarName">Đang tải...</div>
+                    <div class="user-role" id="sidebarRole">role</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-layout">
+        <header class="topbar">
+            <div class="topbar-left">
+                <h3 class="text-gradient-primary" style="font-weight: 700;">Danh Mục Môn Học</h3>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">Khám phá bộ sưu tập tài liệu được phân loại chi tiết theo từng lĩnh vực chuyên môn.</p>
+            
+            <div class="subjects-grid">
+                <a href="files.html?subject=math" class="subject-card mouse-light-wrapper animate-fade-in-up">
+                    <div class="mouse-light"></div>
+                    <i class="fa-solid fa-calculator subject-icon"></i>
+                    <h3>Toán Học</h3>
+                    <p>Đại số, Giải tích, Hình học, Tổ hợp</p>
+                </a>
+                
+                <a href="files.html?subject=physics" class="subject-card mouse-light-wrapper animate-fade-in-up" style="animation-delay: 0.1s">
+                    <div class="mouse-light"></div>
+                    <i class="fa-solid fa-atom subject-icon"></i>
+                    <h3>Vật Lý</h3>
+                    <p>Động lực học, Điện từ, Quang học, Lượng tử</p>
+                </a>
+                
+                <a href="files.html?subject=chemistry" class="subject-card mouse-light-wrapper animate-fade-in-up" style="animation-delay: 0.2s">
+                    <div class="mouse-light"></div>
+                    <i class="fa-solid fa-flask subject-icon"></i>
+                    <h3>Hóa Học</h3>
+                    <p>Hóa Hữu cơ, Hóa Vô cơ, Hóa Phân tích</p>
+                </a>
+
+                <a href="files.html?subject=it" class="subject-card mouse-light-wrapper animate-fade-in-up" style="animation-delay: 0.3s">
+                    <div class="mouse-light"></div>
+                    <i class="fa-solid fa-laptop-code subject-icon"></i>
+                    <h3>Tin Học</h3>
+                    <p>Lập trình, Thuật toán, Cấu trúc dữ liệu</p>
+                </a>
+
+                <a href="files.html?subject=english" class="subject-card mouse-light-wrapper animate-fade-in-up" style="animation-delay: 0.4s">
+                    <div class="mouse-light"></div>
+                    <i class="fa-solid fa-language subject-icon"></i>
+                    <h3>Ngoại Ngữ</h3>
+                    <p>Ngữ pháp, Từ vựng, IELTS, TOEIC</p>
+                </a>
+
+                <a href="files.html?subject=literature" class="subject-card mouse-light-wrapper animate-fade-in-up" style="animation-delay: 0.5s">
+                    <div class="mouse-light"></div>
+                    <i class="fa-solid fa-book-open-reader subject-icon"></i>
+                    <h3>Ngữ Văn</h3>
+                    <p>Văn học Việt Nam, Văn học Nước ngoài</p>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { auth, db } from './assets/js/firebase.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    document.getElementById('sidebarName').textContent = data.fullname;
+                    document.getElementById('sidebarRole').textContent = data.role;
+                    if(data.avatar) document.getElementById('sidebarAvatar').src = data.avatar;
+                }
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Mouse light effect
+        document.querySelectorAll('.mouse-light-wrapper').forEach(wrapper => {
+            const light = wrapper.querySelector('.mouse-light');
+            wrapper.addEventListener('mousemove', (e) => {
+                const rect = wrapper.getBoundingClientRect();
+                light.style.left = `${e.clientX - rect.left}px`;
+                light.style.top = `${e.clientY - rect.top}px`;
+            });
+        });
+    </script>
+</body>
+</html>
